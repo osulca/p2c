@@ -1,19 +1,34 @@
 <?php
+include_once "ConexionBD.php";
 class Usuario{
-    private $user;
-    private $pass;
+    private $codigo;
+    private $password;
+
+    public function __construct(int $codigo, string $password)
+    {
+        $this->codigo = $codigo;
+        $this->password = $password;
+    }
+
+    public function guardar(){
+        $conexionBD = new ConexionBD();
+
+        $conn = $conexionBD->Conectar();
+        $sql = "INSERT INTO usuarios(codigo, password) VALUES($this->codigo, '$this->password')";
+        $result = $conn->query($sql);
+
+        $conexionBD->Cerrar();
+
+        return $result;
+    }
 
     public function traerDatos(){
-        $host = "localhost";
-        $usuario = "root";
-        $password = "";
-        $db = "universidad";
+        $conexionBD = new ConexionBD();
 
-        $conn = new mysqli($host,$usuario,$password,$db);
+        $conn = $conexionBD->Conectar();
         $temp = $conn->query("SELECT * FROM usuarios");
+        $conexionBD->Cerrar();
 
-        // $array = ["omar_sulca", "123456"];
-        // return $array;
         return $temp->fetch_all();
     }
 
@@ -29,13 +44,11 @@ class Usuario{
     }
 
     public function validarContraseña(int $id, string $passForm): bool{
-        $host = "localhost";
-        $usuario = "root";
-        $password = "";
-        $db = "universidad";
+        $conexionBD = new ConexionBD();
 
-        $conn = new mysqli($host,$usuario,$password,$db);
+        $conn = $conexionBD->Conectar();
         $temp = $conn->query("SELECT password FROM usuarios WHERE id=$id");
+        $conexionBD->Cerrar();
 
         $item = $temp->fetch_assoc();
         $passBD = $item["password"];

@@ -1,28 +1,19 @@
 <?php
+include_once "ConexionBD.php";
 class Estudiantes{
+    private $nombres;
+    private $apellidos;
+    private $idUsuario;
+
     public function traerTodo(){
-        $array = [
-            [
-                "nombres"=>"Marcela",
-                "apellidos"=>"Briceño"
-            ],
-            [
-                "nombres"=>"Pedro",
-                "apellidos"=>"Perez"
-            ],
-            [
-                "nombres"=>"Antonio",
-                "apellidos"=>"Suarez"
-            ],
-            [
-                "nombres"=>"Maria",
-                "apellidos"=>"Estevez"
-            ],
-            [
-                "nombres"=>"Josefina",
-                "apellidos"=>"Torres"
-            ]
-        ];
-        return $array;
+        $conexionBD = new ConexionBD();
+        $conn = $conexionBD->Conectar();
+
+        $sql = "SELECT * FROM estudiantes";
+        $resultado = $conn->query($sql);
+
+        $conexionBD->Cerrar();
+
+        return $resultado;
     }
 }

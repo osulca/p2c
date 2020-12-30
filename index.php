@@ -11,7 +11,9 @@ if (!empty($_POST)) {
     require_once "clases/Usuario.php";
     $usuario = new Usuario();
     $resultados = $usuario->traerDatos();
+
     $id = $usuario->buscarUsuario($resultados, $user);
+
     if ($id!=0) {
         if($usuario->validarContraseña($id, $pass)){
             session_start();
