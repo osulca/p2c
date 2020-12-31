@@ -4,7 +4,7 @@ class Usuario{
     private $codigo;
     private $password;
 
-    public function __construct(int $codigo, string $password)
+    public function __construct(int $codigo=0, string $password="algo")
     {
         $this->codigo = $codigo;
         $this->password = $password;
@@ -20,6 +20,18 @@ class Usuario{
         $conexionBD->Cerrar();
 
         return $result;
+    }
+
+    public function eliminar(int $id){
+        $conexionBD = new ConexionBD();
+        $conn = $conexionBD->Conectar();
+
+        $sql = "DELETE FROM usuarios WHERE id=$id";
+        $resultado = $conn->query($sql);
+
+        $conexionBD->Cerrar();
+
+        return $resultado;
     }
 
     public function traerDatos(){
@@ -59,3 +71,4 @@ class Usuario{
         return false;
     }
 }
+
