@@ -10,8 +10,9 @@ class Estudiantes{
         $conn = $conexionBD->Conectar();
 
         $sql = "SELECT * FROM estudiantes";
-        $resultado = $conn->query($sql);
-
+        $sentencia = $conn->prepare($sql);
+        $sentencia->execute();
+        $resultado = $sentencia->get_result();
         $conexionBD->Cerrar();
 
         return $resultado;
@@ -22,7 +23,15 @@ class Estudiantes{
         $conn = $conexionBD->Conectar();
 
         $sql = "SELECT * FROM estudiantes WHERE id=$id";
-        $resultado = $conn->query($sql);
+        $sentencia = $conn->prepare($sql);
+        $sentencia->execute();
+        $sentencia->bind_result($ide, $nombres, $apellidos, $idu);
+        while($sentencia->fetch()){
+            $resultado[0] = $ide;
+            $resultado[1] = $nombres;
+            $resultado[2] = $apellidos;
+            $resultado[3] = $idu;
+        }
 
         $conexionBD->Cerrar();
 
